@@ -13,8 +13,8 @@ app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
+app.get("/api/dia", (req, res) => {
+  res.send("Hello, DIA is fired up on Mountain Dew!");
 });
 
 app.use(function errorHandler(error, req, res, next) {
