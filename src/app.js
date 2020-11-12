@@ -1,4 +1,5 @@
 require("dotenv").config();
+const logger = require("./logger");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -7,6 +8,9 @@ const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const usersRouter = require("./users/users-router");
 const authRouter = require("./auth/auth-router");
+const validateBearerToken = require("./validateToken/validateBearerToken");
+
+const todosRouter = require("./Todos/todos-router");
 
 const app = express();
 
@@ -20,9 +24,11 @@ app.use(
     origin: CLIENT_ORIGIN,
   })
 );
+// app.use(validateBearerToken);
 
 app.use(usersRouter);
 app.use("/api/auth/", authRouter);
+app.use("/api/todos", todosRouter);
 
 app.get("/api/dia", (req, res) => {
   res.send("Hello, DIA is fired up on Mountain Dew!");
