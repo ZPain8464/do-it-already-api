@@ -5,11 +5,14 @@ const cors = require("cors");
 const { CLIENT_ORIGIN } = require("./config");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
+const usersRouter = require("./users/users-router");
+const authRouter = require("./auth/auth-router");
 
 const app = express();
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 
+app.use(express.json());
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(
@@ -17,6 +20,9 @@ app.use(
     origin: CLIENT_ORIGIN,
   })
 );
+
+app.use(usersRouter);
+app.use("/api/auth/", authRouter);
 
 app.get("/api/dia", (req, res) => {
   res.send("Hello, DIA is fired up on Mountain Dew!");
