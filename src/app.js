@@ -11,6 +11,7 @@ const authRouter = require("./auth/auth-router");
 const validateBearerToken = require("./validateToken/validateBearerToken");
 
 const todosRouter = require("./Todos/todos-router");
+const categoriesRouter = require("./Categories/categories-router");
 
 const app = express();
 
@@ -29,9 +30,10 @@ app.use(
 app.use(usersRouter);
 app.use("/api/auth/", authRouter);
 app.use("/api/todos", todosRouter);
+app.use("/api/categories", categoriesRouter);
 
 app.get("/api/dia", (req, res) => {
-  res.send("Hello, DIA is fired up on Mountain Dew!");
+  res.send("Hello, world!");
 });
 
 app.use(function errorHandler(error, req, res, next) {

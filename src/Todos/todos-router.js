@@ -23,6 +23,7 @@ todosRouter
       checked,
       category_id,
       user_id,
+      start_date,
     } = req.body;
     const newTodo = {
       category,
@@ -31,6 +32,7 @@ todosRouter
       checked,
       category_id,
       user_id,
+      start_date,
     };
 
     for (const [key, value] of Object.entries(newTodo))
@@ -48,6 +50,25 @@ todosRouter
           .json(todo);
       })
       .catch(next);
+  });
+
+todosRouter
+  .route("/:id")
+  .all((req, res, next) => {
+    TodosService.getById(req.app.get("db"), req.params.id)
+      .then((todo) => {
+        if (!todo) {
+          return res.status(404).json({
+            error: { message: `Todo doesn't exist` },
+          });
+        }
+        res.todo = todo;
+        next();
+      })
+      .catch(next);
+  })
+  .get((req, res, next) => {
+    res.json(res.todo);
   });
 
 module.exports = todosRouter;
