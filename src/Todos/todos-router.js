@@ -69,6 +69,13 @@ todosRouter
   })
   .get((req, res, next) => {
     res.json(res.todo);
+  })
+  .delete((req, res, next) => {
+    TodosService.deleteTodo(req.app.get("db"), req.params.id)
+      .then((numRowsAffected) => {
+        res.status(204).end();
+      })
+      .catch(next);
   });
 
 module.exports = todosRouter;
