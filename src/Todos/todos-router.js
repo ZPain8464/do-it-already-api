@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const TodosService = require("./todos-service");
+const logger = require("../logger");
 
 const todosRouter = express.Router();
 
@@ -72,6 +73,27 @@ todosRouter
   })
   .delete((req, res, next) => {
     TodosService.deleteTodo(req.app.get("db"), req.params.id)
+      .then((numRowsAffected) => {
+        res.status(204).end();
+      })
+      .catch(next);
+  })
+  .patch((req, res, next) => {
+    const { id, title, description } = req.body;
+
+    const todoToUpdate = { id, title, description };
+
+    const numberOfValues = Object.values(todoToUpdate).filter(Boolean).length;
+    if (numberOfValues === 0) {
+      logger.error(`Invalid update without required fields`);
+      return res.status(400).json({
+        error: {
+          message: `Request body must contain either 'description' or 'title'`,
+        },
+      });
+    }
+
+    TodosService.updateTodo(req.app.get("db"), req.params.id, todoToUpdate)
       .then((numRowsAffected) => {
         res.status(204).end();
       })
