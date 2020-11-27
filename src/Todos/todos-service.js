@@ -1,6 +1,9 @@
 const TodosService = {
-  getAllTodos(knex) {
-    return knex.select("*").from("todos");
+  getAllTodos(knex, user_id) {
+    return knex.from("todos").select("*").where("user_id", user_id);
+  },
+  getById(knex, id) {
+    return knex.from("todos").select("*").where("id", id).first();
   },
 
   insertTodo(knex, newTodo) {
@@ -12,13 +15,13 @@ const TodosService = {
         return rows[0];
       });
   },
-  getById(knex, id) {
-    return knex.from("todos").select("*").where("id", id).first();
-  },
   deleteTodo(knex, id) {
     return knex("todos").where({ id }).delete();
   },
   updateTodo(knex, id, newTodoFields) {
+    return knex("todos").where({ id }).update(newTodoFields);
+  },
+  updateChecked(knex, id, newTodoFields) {
     return knex("todos").where({ id }).update(newTodoFields);
   },
 };

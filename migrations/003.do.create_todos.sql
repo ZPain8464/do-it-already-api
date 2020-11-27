@@ -9,5 +9,5 @@ CREATE TABLE todos (
     user_id INTEGER 
         REFERENCES users(id) ON DELETE CASCADE,
     category_id INTEGER 
-        REFERENCES categories(id) ON DELETE SET NULL
+        REFERENCES categories(id) ON DELETE CASCADE NOT NULL
 );

@@ -1,22 +1,35 @@
 const path = require("path");
 const express = require("express");
 const TodosService = require("./todos-service");
+const { requireAuth } = require("../middleware/jwt-auth");
 const logger = require("../logger");
 
 const todosRouter = express.Router();
 
+// const serializeTodo = (todo) => ({
+//   id: todo.id,
+//   category: todo.category,
+//   title: xss(todo.title),
+//   description: xss(todo.description),
+//   checked: todo.checked,
+//   user_id: todo.user_id,
+//   category_id: todo.category_id,
+// });
+
 todosRouter
   .route("/")
 
-  .get((req, res, next) => {
+  .get(requireAuth, (req, res, next) => {
     const knexInstance = req.app.get("db");
-    TodosService.getAllTodos(knexInstance)
+    const user_id = req.user.id;
+    console.log(user_id);
+    TodosService.getAllTodos(knexInstance, user_id)
       .then((todos) => {
         res.json(todos);
       })
       .catch(next);
   })
-  .post((req, res, next) => {
+  .post(requireAuth, (req, res, next) => {
     const {
       category,
       title,
@@ -24,7 +37,6 @@ todosRouter
       checked,
       category_id,
       user_id,
-      start_date,
     } = req.body;
     const newTodo = {
       category,
@@ -33,11 +45,10 @@ todosRouter
       checked,
       category_id,
       user_id,
-      start_date,
     };
 
     for (const [key, value] of Object.entries(newTodo))
-      if (value === null) {
+      if (value == null) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
         });
@@ -68,20 +79,38 @@ todosRouter
       })
       .catch(next);
   })
-  .get((req, res, next) => {
+  .get(requireAuth, (req, res, next) => {
     res.json(res.todo);
   })
-  .delete((req, res, next) => {
+  .delete(requireAuth, (req, res, next) => {
     TodosService.deleteTodo(req.app.get("db"), req.params.id)
       .then((numRowsAffected) => {
         res.status(204).end();
       })
       .catch(next);
   })
-  .patch((req, res, next) => {
-    const { id, title, description } = req.body;
+  .patch(requireAuth, (req, res, next) => {
+    const {
+      id,
+      title,
+      description,
+      category,
+      category_id,
+      checked,
+      user_id,
+      start_date,
+    } = req.body;
 
-    const todoToUpdate = { id, title, description };
+    const todoToUpdate = {
+      id,
+      title,
+      description,
+      category,
+      category_id,
+      checked,
+      user_id,
+      start_date,
+    };
 
     const numberOfValues = Object.values(todoToUpdate).filter(Boolean).length;
     if (numberOfValues === 0) {
@@ -94,6 +123,25 @@ todosRouter
     }
 
     TodosService.updateTodo(req.app.get("db"), req.params.id, todoToUpdate)
+      .then((numRowsAffected) => {
+        res.status(204).end();
+      })
+      .catch(next);
+  })
+  .put(requireAuth, (req, res, next) => {
+    const { id, checked } = req.body;
+    const todoCheck = { id, checked };
+
+    const numberOfValues = Object.values(todoCheck).filter(Boolean).length;
+    if (numberOfValues === 0) {
+      logger.error(`Invalid update without required fields`);
+      return res.status(400).json({
+        error: {
+          message: `Request body must contain either 'description' or 'title'`,
+        },
+      });
+    }
+    TodosService.updateChecked(req.app.get("db"), req.params.id, todoCheck)
       .then((numRowsAffected) => {
         res.status(204).end();
       })

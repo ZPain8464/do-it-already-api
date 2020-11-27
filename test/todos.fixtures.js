@@ -9,7 +9,7 @@ function makeTodosArray() {
       completed_date: "2020-04-03T00:00:00.000Z",
       checked: false,
       category_id: 1,
-      user_id: 4,
+      user_id: 1,
     },
     {
       id: 2,
@@ -20,10 +20,10 @@ function makeTodosArray() {
       completed_date: "2020-04-03T00:00:00.000Z",
       checked: false,
       category_id: 1,
-      user_id: 4,
+      user_id: 2,
     },
     {
-      id: 4,
+      id: 3,
       category: "travel",
       title: "Get traveling",
       description: "Visit France by NYE",
@@ -31,7 +31,7 @@ function makeTodosArray() {
       completed_date: "2020-04-03T00:00:00.000Z",
       checked: true,
       category_id: 4,
-      user_id: 5,
+      user_id: 3,
     },
   ];
 }

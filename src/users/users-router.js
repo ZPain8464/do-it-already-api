@@ -1,7 +1,6 @@
 const express = require("express");
 const UsersService = require("./users-service");
 const { requireAuth } = require("../middleware/jwt-auth");
-// add xss later
 
 const UsersRouter = express.Router();
 const serializeUser = (user) => {
