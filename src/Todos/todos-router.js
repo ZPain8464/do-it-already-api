@@ -6,16 +6,6 @@ const logger = require("../logger");
 
 const todosRouter = express.Router();
 
-// const serializeTodo = (todo) => ({
-//   id: todo.id,
-//   category: todo.category,
-//   title: xss(todo.title),
-//   description: xss(todo.description),
-//   checked: todo.checked,
-//   user_id: todo.user_id,
-//   category_id: todo.category_id,
-// });
-
 todosRouter
   .route("/")
 
