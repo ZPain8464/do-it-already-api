@@ -23,15 +23,22 @@ UsersRouter.route("/api/users")
     res.json(serializeUser(req.user));
   })
   .post((req, res) => {
-    const { password, username, name } = req.body;
+    const { password, username, name, confirmPassword } = req.body;
     const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
+    console.log(req.body);
 
-    for (const field of ["username", "password", "name"]) {
+    for (const field of ["username", "password", "name", "confirmPassword"]) {
       if (!req.body[field]) {
         return res.status(400).json({
           error: `Missing ${field}`,
         });
       }
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        error: `Passwords don't match`,
+      });
     }
 
     if (password.length < 8) {

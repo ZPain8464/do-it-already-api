@@ -22,7 +22,6 @@ todosRouter
   .get(requireAuth, (req, res, next) => {
     const knexInstance = req.app.get("db");
     const user_id = req.user.id;
-    console.log(user_id);
     TodosService.getAllTodos(knexInstance, user_id)
       .then((todos) => {
         res.json(todos);

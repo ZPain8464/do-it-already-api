@@ -7,7 +7,6 @@ const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const usersRouter = require("./users/users-router");
 const authRouter = require("./auth/auth-router");
-const validateBearerToken = require("./validateToken/validateBearerToken");
 
 const todosRouter = require("./Todos/todos-router");
 const categoriesRouter = require("./Categories/categories-router");
