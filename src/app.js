@@ -25,7 +25,6 @@ app.use(
     origin: CLIENT_ORIGIN,
   })
 );
-// app.use(validateBearerToken);
 
 app.use(usersRouter);
 app.use("/api/auth/", authRouter);
