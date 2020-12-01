@@ -1,10 +1,22 @@
 const path = require("path");
 const express = require("express");
+const xss = require("xss");
 const TodosService = require("./todos-service");
 const { requireAuth } = require("../middleware/jwt-auth");
 const logger = require("../logger");
 
 const todosRouter = express.Router();
+
+const serializeTodo = (todos) => {
+  return {
+    category: todos.category,
+    title: xss(todos.title),
+    description: xss(todos.description),
+    checked: todos.checked,
+    category_id: todos.category_id,
+    user_id: todos.user_id,
+  };
+};
 
 todosRouter
   .route("/")
@@ -48,7 +60,7 @@ todosRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${todo.id}`))
-          .json(todo);
+          .json(serializeTodo(todo));
       })
       .catch(next);
   });

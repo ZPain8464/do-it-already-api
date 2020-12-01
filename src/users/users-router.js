@@ -20,6 +20,7 @@ UsersRouter.route("/api/users")
     next();
   })
   .get(requireAuth, (req, res) => {
+    console.log(req.user);
     res.json(serializeUser(req.user));
   })
   .post((req, res) => {
