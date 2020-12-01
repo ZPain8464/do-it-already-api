@@ -60,7 +60,7 @@ todosRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${todo.id}`))
-          .json(serializeTodo(todo));
+          .json(todo);
       })
       .catch(next);
   });
