@@ -1,4 +1,4 @@
-# Do It Already 
+# Do It Already - API
 
 A todo app that empowers you to knock out your bucklet list. 
 
