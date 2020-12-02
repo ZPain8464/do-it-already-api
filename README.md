@@ -32,3 +32,39 @@ Create todos that will help you achieve greater goals, or simply create fun todo
 
 Deployed via Heroku
 
+## API Endpoints
+
+### Users Router
+```
+- /api/users 
+- - GET - gets all users 
+- - POST - creates a new user
+```
+
+### Todos Router
+```
+- /api/todos
+- - GET - gets all todos 
+- - POST - creates a new todo 
+```
+
+### Todos/:id Router 
+```
+- /api/todos/:id 
+- - GET - gets todo by id 
+- - DELETE - deletes a todo by id 
+- - PATCH - updates a todo by id 
+- - PUT - marks todo complete or incomplete by id 
+```
+
+### Categories Router
+```
+- /api/categories 
+- - GET - gets all categories 
+```
+
+### Categories/:id Router
+```
+- /api/categories/:id
+- - GET - gets categories by id 
+```
